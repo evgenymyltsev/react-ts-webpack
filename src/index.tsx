@@ -1,15 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-
-export default function App(): JSX.Element {
-    const sum = (a:number, b:number):number => a + b
-    return (
-        <h1>
-          Hello {sum(5, 15)}
-        </h1>
-    )
-}
+import App from './App';
+import { StoreProvider } from './Store';
+import { Router, RouteComponentProps } from '@reach/router';
+import HomePage from './HomePage';
+import FavPage from './FavPage';
 
 const root = document.getElementById('app-root');
-
-ReactDOM.render(<App />, root);
+const RouterPage = (props: { pageComponent: JSX.Element } & RouteComponentProps) => props.pageComponent
+ReactDOM.render(
+    <StoreProvider>
+        <Router>
+            <App path='/'>
+                <RouterPage pageComponent={<HomePage />} path='/' />
+                <RouterPage pageComponent={<FavPage />} path='/faves' />
+            </App>
+        </Router>
+    </StoreProvider>,
+    root
+);
